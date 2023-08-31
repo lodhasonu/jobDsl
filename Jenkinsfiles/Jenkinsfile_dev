@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout your source code here
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                // Build steps for dev environment
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // Test steps for dev environment
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                // Deployment steps for dev environment
+            }
+        }
+    }
+}
