@@ -14,7 +14,7 @@ def loadServices() {
 }
 
 def createPipelineJob(service) {
-    pipelineJob(service.service_name) {
+    pipelineJob(service.name) {
         definition {
             cpsScm {
                 scm {
@@ -46,7 +46,7 @@ def createPipelineJob(service) {
                             }
                             stage('Deploy') {
                                 steps {
-                                    echo "Deploying using ArgoCD file: ${service.argoCDfile}"
+                                    echo "Deploying using ArgoCD file: ${service.argocdFile}"
                                 }
                             }
                         }
