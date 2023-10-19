@@ -16,17 +16,38 @@ def loadServices() {
 def createPipelineJob(service) {
     pipelineJob(service.name) {
         definition {
-            cpsScm {
-                scm {
-                    git {
-                        remote {
-                            url(service.service_repo)
+            cps {
+                script("""
+                    pipeline {
+                        agent any
+                        stages {
+                            stage('Checkout') {
+                                steps {
+                                    checkout([
+                                        $class: 'GitSCM',
+                                        branches: [[name: 'master']],
+                                        userRemoteConfigs: [[url: '${service.service_repo}']]
+                                    ])
+                                }
+                            }
+                            stage('Build') {
+                                steps {
+                                    echo "Building the project..."
+                                }
+                            }
+                            stage('Test') {
+                                steps {
+                                    echo "Running tests..."
+                                }
+                            }
+                            stage('Deploy') {
+                                steps {
+                                    echo "Deploying using ArgoCD file: ${service.argocdFile}"
+                                }
+                            }
                         }
-                        branch('master') 
                     }
-                }
-                // Pointing to the Jenkinsfile in the service's repo
-                scriptPath('Jenkinsfile')
+                """)
             }
         }
     }
