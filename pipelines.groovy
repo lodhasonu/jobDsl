@@ -49,7 +49,7 @@ def createPipelineJob(service) {
     }
 }
 
-def services = readServicesFromFile('aud-dev-1/service.json')
+def services = readServicesFromFile('aud-dev-1/services.json')
 
 services.each { service ->
     createPipelineJob(service)
