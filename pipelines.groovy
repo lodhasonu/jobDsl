@@ -2,8 +2,10 @@ import groovy.json.JsonSlurper
 
 def services = loadServices()
 
-services.each { service ->
-    createPipelineJob(service)
+folder('poc') {
+    services.each { service ->
+        createPipelineJob(service)
+    }
 }
 
 def loadServices() {
@@ -14,23 +16,13 @@ def loadServices() {
 }
 
 def createPipelineJob(service) {
-    pipelineJob(service.name) {
+    pipelineJob("poc/${service.name}") {
         definition {
             cps {
                 script("""
                     pipeline {
                         agent any
                         stages {
-                            stage('Checkout') {
-                                steps {
-                                    script {
-                                        checkout([
-                                            branch: 'master',
-                                            userRemoteConfigs: [[url: '${service.service_repo}']]
-                                        ])
-                                    }
-                                }
-                            }
                             stage('Build') {
                                 steps {
                                     echo "Building the project..."
