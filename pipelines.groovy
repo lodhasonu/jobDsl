@@ -23,11 +23,12 @@ def createPipelineJob(service) {
                         stages {
                             stage('Checkout') {
                                 steps {
-                                    checkout([
-                                        $class: 'GitSCM',
-                                        branches: [[name: 'master']],
-                                        userRemoteConfigs: [[url: '${service.service_repo}']]
-                                    ])
+                                    script {
+                                        checkout([
+                                            branch: 'master',
+                                            userRemoteConfigs: [[url: '${service.service_repo}']]
+                                        ])
+                                    }
                                 }
                             }
                             stage('Build') {
