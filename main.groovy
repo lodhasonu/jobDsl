@@ -27,8 +27,8 @@ def createPipelineJob(service) {
 }
 
 def loadPipelineScript(service) {
-    // Assuming the pipeline script is named 'pipelineScript.groovy'
-    def scriptFile = new File("pipeline_templates/pipelineScript.groovy")
-    def pipelineScript = scriptFile.text.replace("${service.argocdFile}", service.argocdFile)
-    return pipelineScript
+    // Using Jenkins's readFile function to read from the workspace.
+    def pipelineScriptContent = readFile "pipelineScript.groovy"
+    def parsedPipelineScript = pipelineScriptContent.replace("${service.argocdFile}", service.argocdFile)
+    return parsedPipelineScript
 }
