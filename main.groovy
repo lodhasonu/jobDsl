@@ -20,26 +20,29 @@ pipelineJob("poc/${service.name}") {
     definition {
         cps {
             script("""
-    pipeline {
-        agent any
-        stages {
-            stage('Build') {
-                steps {
-                    echo "Building the project..."
-                }
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo "Building the project... ${service.service_repo}"
             }
-            stage('Test') {
-                steps {
-                    echo "Running tests..."
-                }
+        }
+
+        stage('Test') {
+            steps {
+                echo "Running tests... ${service.name}"
             }
-            stage('Deploy') {
-                steps {
-                    echo "Deploying using ArgoCD file: ${service.argocdFile}"
-                }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying using ArgoCD file: ${service.argocdFile}"
             }
         }
     }
+}
             """)
         }
     }
