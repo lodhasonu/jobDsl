@@ -16,19 +16,32 @@ def loadServices() {
 }
 
 def createPipelineJob(service) {
-    def pipelineScript = loadPipelineScript(service)
-    pipelineJob("poc/${service.name}") {
-        definition {
-            cps {
-                script(pipelineScript)
+pipelineJob("poc/${service.name}") {
+    definition {
+        cps {
+            script("""
+    pipeline {
+        agent any
+        stages {
+            stage('Build') {
+                steps {
+                    echo "Building the project..."
+                }
+            }
+            stage('Test') {
+                steps {
+                    echo "Running tests..."
+                }
+            }
+            stage('Deploy') {
+                steps {
+                    echo "Deploying using ArgoCD file: ${service.argocdFile}"
+                }
             }
         }
     }
+            """)
+        }
+    }
 }
-
-def loadPipelineScript(service) {
-    // Using Jenkins's readFile function to read from the workspace.
-    def pipelineScriptContent = readFile "pipelineScript.groovy"
-    def parsedPipelineScript = pipelineScriptContent.replace("${service.argocdFile}", service.argocdFile)
-    return parsedPipelineScript
 }
