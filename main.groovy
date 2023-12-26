@@ -24,7 +24,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Build-') {
             steps {
                 echo "Building the project... ${service.service_repo}"
             }
