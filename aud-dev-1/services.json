@@ -2,16 +2,16 @@
     {
         "name": "aud-uae-service",
         "argocdFile": "audience-uae",
-        "service_repo": "git@bitbucket.org:junglee_games/audience_uae.git"
+        "service_repo": "git@bitbucket.org:abc/audience_uae.git"
     },
     {
         "name": "aud-sre-service",
         "argocdFile": "audience-sre",
-        "service_repo": "git@bitbucket.org:junglee_games/audience_sre.git"
+        "service_repo": "git@bitbucket.org:abc/audience_sre.git"
     },
     {
         "name": "aud-admin-service",
         "argocdFile": "audience-admin",
-        "service_repo": "git@bitbucket.org:junglee_games/audience_admin.git"
+        "service_repo": "git@bitbucket.org:abc/audience_admin.git"
     }
 ]
