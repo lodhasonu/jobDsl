@@ -14,12 +14,7 @@ def loadServices() {
 }
 
 def createPipelineJob(service) {
-    final String REPO_BASE_URL = "https://raw.githubusercontent.com"
-    final String USERNAME = "lodhasonu"
-    final String REPO_NAME = "jobdsl"
-    final String BRANCH = "master"
-
-    def scriptUrl = getScriptUrlForService(service, REPO_BASE_URL, USERNAME, REPO_NAME, BRANCH)
+    def scriptUrl = getScriptUrlForService(service)
 
     if (!scriptUrl) {
         println "Unknown service type for ${service.name}, skipping job creation."
@@ -36,12 +31,12 @@ def createPipelineJob(service) {
     }
 }
 
-def getScriptUrlForService(service, String repoBaseUrl, String username, String repoName, String branch) {
+def getScriptUrlForService(service) {
     switch(service.type) {
         case 'go':
-            return "${repoBaseUrl}/${username}/${repoName}/${branch}/pipeline_templates/go.groovy"
+            return "https://raw.githubusercontent.com/lodhasonu/jobdsl/master/pipeline_templates/go.groovy"
         case 'java':
-            return "${repoBaseUrl}/${username}/${repoName}/${branch}/pipeline_templates/java.groovy"
+            return "https://raw.githubusercontent.com/lodhasonu/jobdsl/master/pipeline_templates/java.groovy"
         default:
             return null
     }
