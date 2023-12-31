@@ -1,4 +1,11 @@
 import groovy.json.JsonSlurper
+
+// Define constants for repository details
+final String REPO_BASE_URL = "https://raw.githubusercontent.com"
+final String USERNAME = "lodhasonu"
+final String REPO_NAME = "jobdsl"
+final String BRANCH = "master"
+
 def services = loadServices()
 
 folder('poc') {
@@ -8,39 +15,19 @@ folder('poc') {
 }
 
 def loadServices() {
-    def jsonUrl = 'https://raw.githubusercontent.com/lodhasonu/jobdsl/master/aud-dev-1/services.json'
-    def jsonContent = loadRemoteJson(jsonUrl)
-    def json = new JsonSlurper().parseText(jsonContent)
-    return json
-}
-def loadRemoteJson(String url) {
-    // This method loads JSON content from a remote URL
-    // For public repositories
-    return new URL(url).text
+    def jsonUrl = "${REPO_BASE_URL}/${USERNAME}/${REPO_NAME}/${BRANCH}/aud-dev-1/services.json"
+    return new JsonSlurper().parseText(new URL(jsonUrl).text)
 }
 
 def createPipelineJob(service) {
-    // Move global variables inside the method
-    def repoBaseUrl = "https://raw.githubusercontent.com"
-    def username = "lodhasonu"
-    def repoName = "jobdsl"
-    def branch = "master"
+    def scriptUrl = getScriptUrlForService(service)
 
-    def scriptUrl
-    if (service.type == 'go') {
-        scriptUrl = "${repoBaseUrl}/${username}/${repoName}/${branch}/pipeline_templates/go.groovy"
-    } else if (service.type == 'java') {
-        scriptUrl = "${repoBaseUrl}/${username}/${repoName}/${branch}/pipeline_templates/java.groovy"
-    } else {
+    if (!scriptUrl) {
         println "Unknown service type for ${service.name}, skipping job creation."
         return
     }
 
-    def pipelineTemplate = new URL(scriptUrl).text
-    def pipelineScript = pipelineTemplate.replace('${service.name}', service.name)
-                                         .replace('${service.service_repo}', service.service_repo)
-                                         .replace('${service.argocdFile}', service.argocdFile)
-
+    def pipelineScript = fetchAndPreparePipelineScript(scriptUrl, service)
     pipelineJob("poc/${service.name}") {
         definition {
             cps {
@@ -49,11 +36,21 @@ def createPipelineJob(service) {
         }
     }
 }
-def loadRemoteScript(String url) {
-    // This method loads the script content from a remote URL
-    // For public repositories
-    return new URL(url).text
 
-    // For private repositories, you would need to include authentication,
-    // which is more complex and depends on how you handle secrets/authentication.
+def getScriptUrlForService(service) {
+    switch(service.type) {
+        case 'go':
+            return "${REPO_BASE_URL}/${USERNAME}/${REPO_NAME}/${BRANCH}/pipeline_templates/go.groovy"
+        case 'java':
+            return "${REPO_BASE_URL}/${USERNAME}/${REPO_NAME}/${BRANCH}/pipeline_templates/java.groovy"
+        default:
+            return null
+    }
+}
+
+def fetchAndPreparePipelineScript(String scriptUrl, service) {
+    def pipelineTemplate = new URL(scriptUrl).text
+    return pipelineTemplate.replace('${service.name}', service.name)
+                           .replace('${service.service_repo}', service.service_repo)
+                           .replace('${service.argocdFile}', service.argocdFile)
 }
