@@ -1,14 +1,15 @@
 import groovy.json.JsonSlurper
 
-def selectedEnv = 'aud-qa-1' // Explicitly set to 'dev'
+def selectedEnv = 'aud-dev-1' // Explicitly set to 'dev'
 
 // Create the 'poc' and 'poc/dev' folders
-folder('poc') {
-    displayName('POC Folder')
+folder('pipeline') {
+    displayName('cicd')
 }
 
-folder("poc/${selectedEnv}") {
-    displayName("POC Environment Folder for ${selectedEnv}")
+folder("pipeline/${selectedEnv}") {
+    displayName("${selectedEnv}")
+    description('Folder for all audience projects')
 }
 
 def services = loadServices(selectedEnv)
