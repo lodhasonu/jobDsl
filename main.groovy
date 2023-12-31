@@ -1,12 +1,4 @@
-// Define global variables
-def repoBaseUrl = "https://raw.githubusercontent.com"
-def username = "lodhasonu"
-def repoName = "jobdsl"
-def branch = "master"
-def env = "aud-dev-1"
-
-
-import groovy.json.JsonSlurper
+mport groovy.json.JsonSlurper
 
 def services = loadServices()
 
@@ -17,13 +9,19 @@ folder('poc') {
 }
 
 def loadServices() {
-    def jsonUrl = "${repoBaseUrl}/${username}/${repoName}/${branch}/${env}/services.json"
+    def jsonUrl = 'https://raw.githubusercontent.com/lodhasonu/jobdsl/master/aud-dev-1/services.json'
     def jsonContent = loadRemoteJson(jsonUrl)
     def json = new JsonSlurper().parseText(jsonContent)
     return json
 }
 
 def createPipelineJob(service) {
+    // Move global variables inside the method
+    def repoBaseUrl = "https://raw.githubusercontent.com"
+    def username = "lodhasonu"
+    def repoName = "jobdsl"
+    def branch = "master"
+
     def scriptUrl
     if (service.type == 'go') {
         scriptUrl = "${repoBaseUrl}/${username}/${repoName}/${branch}/pipeline_templates/go.groovy"
@@ -34,9 +32,7 @@ def createPipelineJob(service) {
         return
     }
 
-    def pipelineTemplate = loadRemoteScript(scriptUrl)
-
-    // Use GString for replacement
+    def pipelineTemplate = new URL(scriptUrl).text
     def pipelineScript = pipelineTemplate.replace('${service.name}', service.name)
                                          .replace('${service.service_repo}', service.service_repo)
                                          .replace('${service.argocdFile}', service.argocdFile)
@@ -49,7 +45,6 @@ def createPipelineJob(service) {
         }
     }
 }
-
 def loadRemoteScript(String url) {
     // This method loads the script content from a remote URL
     // For public repositories
