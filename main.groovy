@@ -4,11 +4,9 @@ def selectedEnv = System.getenv('ENV') ?: 'aud-dev-1'
 
 // Create the folders first
 folder('poc') {
-    displayName('POC Folder')
 }
 
 folder("poc/${selectedEnv}") {
-    displayName("Folder for ${selectedEnv} environment")
 }
 
 def services = loadServices(selectedEnv)
