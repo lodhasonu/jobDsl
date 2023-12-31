@@ -9,8 +9,10 @@ folder('poc') {
 }
 
 def loadServices() {
-    def file = new File("aud-dev-1/services.json")
-    def json = new JsonSlurper().parse(file)
+    // URL of the remote services.json in GitHub
+    def jsonUrl = 'https://raw.githubusercontent.com/lodhasonu/jobdsl/master/aud-dev-1/services.json'
+    def jsonContent = loadRemoteJson(jsonUrl)
+    def json = new JsonSlurper().parseText(jsonContent)
     return json
 }
 
