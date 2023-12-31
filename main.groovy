@@ -1,19 +1,22 @@
 import groovy.json.JsonSlurper
 
-def services = loadServices()
+// Assuming 'ENV' is a build parameter provided by Jenkins
+def selectedEnv = System.getenv('ENV') ?: 'aud-dev-1' // Default to 'aud-dev-1' if not set
 
-folder('poc') {
+def services = loadServices(selectedEnv)
+
+folder("poc/${selectedEnv}") {
     services.each { service ->
-        createPipelineJob(service)
+        createPipelineJob(service, selectedEnv)
     }
 }
 
-def loadServices() {
-    def jsonUrl = 'https://raw.githubusercontent.com/lodhasonu/jobdsl/master/aud-dev-1/services.json'
+def loadServices(String env) {
+    def jsonUrl = "https://raw.githubusercontent.com/lodhasonu/jobdsl/master/${env}/services.json"
     return new JsonSlurper().parseText(new URL(jsonUrl).text)
 }
 
-def createPipelineJob(service) {
+def createPipelineJob(service, String env) {
     def scriptUrl = getScriptUrlForService(service)
 
     if (!scriptUrl) {
@@ -22,7 +25,7 @@ def createPipelineJob(service) {
     }
 
     def pipelineScript = fetchAndPreparePipelineScript(scriptUrl, service)
-    pipelineJob("poc/${service.name}") {
+    pipelineJob("poc/${env}/${service.name}") {
         definition {
             cps {
                 script(pipelineScript)
@@ -37,6 +40,8 @@ def getScriptUrlForService(service) {
             return "https://raw.githubusercontent.com/lodhasonu/jobdsl/master/pipeline_templates/go.groovy"
         case 'java':
             return "https://raw.githubusercontent.com/lodhasonu/jobdsl/master/pipeline_templates/java.groovy"
+        case 'python': // Assuming you have a Python template
+            return "https://raw.githubusercontent.com/lodhasonu/jobdsl/master/pipeline_templates/python.groovy"
         default:
             return null
     }
