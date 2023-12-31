@@ -16,6 +16,13 @@ folder('poc') {
     }
 }
 
+def loadServices() {
+    def jsonUrl = "${repoBaseUrl}/${username}/${repoName}/${branch}/${env}/services.json"
+    def jsonContent = loadRemoteJson(jsonUrl)
+    def json = new JsonSlurper().parseText(jsonContent)
+    return json
+}
+
 def createPipelineJob(service) {
     def scriptUrl
     if (service.type == 'go') {
@@ -42,7 +49,6 @@ def createPipelineJob(service) {
         }
     }
 }
-
 
 def loadRemoteScript(String url) {
     // This method loads the script content from a remote URL
