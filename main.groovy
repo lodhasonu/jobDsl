@@ -1,3 +1,11 @@
+// Define global variables
+def repoBaseUrl = "https://raw.githubusercontent.com"
+def username = "lodhasonu"
+def repoName = "jobdsl"
+def branch = "master"
+def env = "aud-dev-1"
+
+
 import groovy.json.JsonSlurper
 
 def services = loadServices()
@@ -8,27 +16,12 @@ folder('poc') {
     }
 }
 
-def loadServices() {
-    def jsonUrl = 'https://raw.githubusercontent.com/lodhasonu/jobdsl/master/aud-dev-1/services.json'
-    def jsonContent = loadRemoteJson(jsonUrl)
-    def json = new JsonSlurper().parseText(jsonContent)
-    return json
-}
-
-def loadRemoteJson(String url) {
-    // This method loads JSON content from a remote URL
-    // For public repositories
-    return new URL(url).text
-
-    // Add error handling, private repo handling, etc. as needed
-}
 def createPipelineJob(service) {
-    // Determine the script URL based on the service type
     def scriptUrl
     if (service.type == 'go') {
-        scriptUrl = 'https://raw.githubusercontent.com/lodhasonu/jobdsl/master/pipeline_templates/go.groovy'
+        scriptUrl = "${repoBaseUrl}/${username}/${repoName}/${branch}/pipeline_templates/go.groovy"
     } else if (service.type == 'java') {
-        scriptUrl = 'https://raw.githubusercontent.com/lodhasonu/jobdsl/master/pipeline_templates/java.groovy'
+        scriptUrl = "${repoBaseUrl}/${username}/${repoName}/${branch}/pipeline_templates/java.groovy"
     } else {
         println "Unknown service type for ${service.name}, skipping job creation."
         return
