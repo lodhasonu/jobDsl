@@ -1,22 +1,20 @@
 import groovy.json.JsonSlurper
 
-// Assuming 'ENV' is a build parameter provided by Jenkins
-def selectedEnv = System.getenv('ENV') ?: 'aud-dev-1' // Default to 'aud-dev-1' if not set
+def selectedEnv = System.getenv('ENV') ?: 'aud-dev-1'
+
+// Create the folders first
+folder('poc') {
+    displayName('POC Folder')
+}
+
+folder("poc/${selectedEnv}") {
+    displayName("Folder for ${selectedEnv} environment")
+}
 
 def services = loadServices(selectedEnv)
 
-// Ensure the folder exists
-def folderPath = "poc/${selectedEnv}"
-ensureFolderExists(folderPath)
-
 services.each { service ->
     createPipelineJob(service, selectedEnv)
-}
-
-def ensureFolderExists(String path) {
-    folder(path) {
-        description "Folder for environment: ${path}"
-    }
 }
 
 def loadServices(String env) {
