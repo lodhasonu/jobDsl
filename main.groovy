@@ -1,6 +1,7 @@
 import groovy.json.JsonSlurper
 
-def selectedEnv = System.getenv('ENV') ?: 'aud-dev-1'
+def selectedEnv = params.ENV ?: 'aud-dev-1'
+
 
 // Create the folders first
 folder('poc') {
