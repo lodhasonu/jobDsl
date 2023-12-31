@@ -4,7 +4,7 @@ def selectedEnv = 'aud-dev-1' // Explicitly set to 'dev'
 
 // Create the 'poc' and 'poc/dev' folders
 folder('pipeline') {
-    displayName('pipeline')
+    displayName('pipeline-0')
 }
 
 folder("pipeline/${selectedEnv}") {
