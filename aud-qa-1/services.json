@@ -1,0 +1,20 @@
+[
+    {
+        "name": "uae-service",
+        "argocdFile": "audience-uae",
+        "type": "go",
+        "service_repo": "git@bitbucket.org:abc/audience_uae.git"
+    },
+    {
+        "name": "sre-service",
+        "argocdFile": "audience-sre",
+        "type": "python",
+        "service_repo": "git@bitbucket.org:abc/audience_sre.git"
+    },
+    {
+        "name": "aud-admin-service",
+        "argocdFile": "audience-admin",
+        "type": "java",
+        "service_repo": "git@bitbucket.org:abc/audience_admin.git"
+    }
+]
