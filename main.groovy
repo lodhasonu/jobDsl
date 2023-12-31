@@ -1,6 +1,6 @@
 import groovy.json.JsonSlurper
 
-def selectedEnv = 'aud-uat-1' // Explicitly set to 'dev'
+def selectedEnv = 'aud-qa-1' // Explicitly set to 'dev'
 
 // Create the 'poc' and 'poc/dev' folders
 folder('poc') {
