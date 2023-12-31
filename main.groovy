@@ -24,9 +24,13 @@ def loadRemoteJson(String url) {
 }
 
 def createPipelineJob(service) {
-    // URL of the raw pipeline script in GitHub
     def scriptUrl = 'https://raw.githubusercontent.com/lodhasonu/jobdsl/master/pipeline_templates/pipelineScript.groovy'
-    def pipelineScript = loadRemoteScript(scriptUrl)
+    def pipelineTemplate = loadRemoteScript(scriptUrl)
+
+    // Replace placeholders in the pipeline template
+    def pipelineScript = pipelineTemplate.replaceAll("\\$\\{service\\.name}", service.name)
+                                         .replaceAll("\\$\\{service\\.service_repo}", service.service_repo)
+                                         .replaceAll("\\$\\{service\\.argocdFile}", service.argocdFile)
 
     pipelineJob("poc/${service.name}") {
         definition {
