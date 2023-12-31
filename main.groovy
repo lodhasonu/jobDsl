@@ -1,9 +1,8 @@
 import groovy.json.JsonSlurper
 
-// Access Jenkins build parameter
-def selectedEnv = params.ENV
+// Use environment variable to access the Jenkins build parameter
+def selectedEnv = System.getenv('ENV') ?: 'default_value'  // Set a default value if ENV is not provided
 
-// Create the 'pipeline' and 'pipeline/[selectedEnv]' folders
 folder('pipeline') {
     displayName('pipeline-0')
 }
