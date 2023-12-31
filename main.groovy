@@ -5,9 +5,17 @@ def selectedEnv = System.getenv('ENV') ?: 'aud-dev-1' // Default to 'aud-dev-1' 
 
 def services = loadServices(selectedEnv)
 
-folder("poc/${selectedEnv}") {
-    services.each { service ->
-        createPipelineJob(service, selectedEnv)
+// Ensure the folder exists
+def folderPath = "poc/${selectedEnv}"
+ensureFolderExists(folderPath)
+
+services.each { service ->
+    createPipelineJob(service, selectedEnv)
+}
+
+def ensureFolderExists(String path) {
+    folder(path) {
+        description "Folder for environment: ${path}"
     }
 }
 
