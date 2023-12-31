@@ -9,11 +9,18 @@ folder('poc') {
 }
 
 def loadServices() {
-    // URL of the remote services.json in GitHub
     def jsonUrl = 'https://raw.githubusercontent.com/lodhasonu/jobdsl/master/aud-dev-1/services.json'
     def jsonContent = loadRemoteJson(jsonUrl)
     def json = new JsonSlurper().parseText(jsonContent)
     return json
+}
+
+def loadRemoteJson(String url) {
+    // This method loads JSON content from a remote URL
+    // For public repositories
+    return new URL(url).text
+
+    // Add error handling, private repo handling, etc. as needed
 }
 
 def createPipelineJob(service) {
