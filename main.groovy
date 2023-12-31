@@ -1,8 +1,9 @@
 import groovy.json.JsonSlurper
 
-def selectedEnv = 'aud-dev-1' // Explicitly set to 'dev'
+// Access Jenkins build parameter
+def selectedEnv = params.ENV
 
-// Create the 'poc' and 'poc/dev' folders
+// Create the 'pipeline' and 'pipeline/[selectedEnv]' folders
 folder('pipeline') {
     displayName('pipeline-0')
 }
