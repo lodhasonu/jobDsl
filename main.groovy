@@ -16,7 +16,7 @@ def loadServices() {
 
 def createPipelineJob(service) {
     // URL of the raw pipeline script in GitHub
-    def scriptUrl = 'https://raw.githubusercontent.com/lodha/jobdsl/master/pipeline_templates/pipelineScript.groovy'
+    def scriptUrl = 'https://raw.githubusercontent.com/lodhasonu/jobdsl/master/pipeline_templates/pipelineScript.groovy'
     def pipelineScript = loadRemoteScript(scriptUrl)
 
     pipelineJob("poc/${service.name}") {
