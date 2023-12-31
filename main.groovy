@@ -1,5 +1,4 @@
-mport groovy.json.JsonSlurper
-
+import groovy.json.JsonSlurper
 def services = loadServices()
 
 folder('poc') {
@@ -13,6 +12,11 @@ def loadServices() {
     def jsonContent = loadRemoteJson(jsonUrl)
     def json = new JsonSlurper().parseText(jsonContent)
     return json
+}
+def loadRemoteJson(String url) {
+    // This method loads JSON content from a remote URL
+    // For public repositories
+    return new URL(url).text
 }
 
 def createPipelineJob(service) {
