@@ -23,7 +23,17 @@ def loadRemoteJson(String url) {
     // Add error handling, private repo handling, etc. as needed
 }
 def createPipelineJob(service) {
-    def scriptUrl = 'https://raw.githubusercontent.com/lodhasonu/jobdsl/master/pipeline_templates/pipelineScript.groovy'
+    // Determine the script URL based on the service type
+    def scriptUrl
+    if (service.type == 'go') {
+        scriptUrl = 'https://raw.githubusercontent.com/lodhasonu/jobdsl/master/pipeline_templates/go.groovy'
+    } else if (service.type == 'java') {
+        scriptUrl = 'https://raw.githubusercontent.com/lodhasonu/jobdsl/master/pipeline_templates/java.groovy'
+    } else {
+        println "Unknown service type for ${service.name}, skipping job creation."
+        return
+    }
+
     def pipelineTemplate = loadRemoteScript(scriptUrl)
 
     // Use GString for replacement
@@ -39,6 +49,7 @@ def createPipelineJob(service) {
         }
     }
 }
+
 
 def loadRemoteScript(String url) {
     // This method loads the script content from a remote URL
