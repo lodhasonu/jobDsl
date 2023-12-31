@@ -8,7 +8,7 @@
     {
         "name": "aud-sre-service",
         "argocdFile": "audience-sre",
-        "type": "go",
+        "type": "python",
         "service_repo": "git@bitbucket.org:abc/audience_sre.git"
     },
     {
