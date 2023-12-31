@@ -1,11 +1,14 @@
 import groovy.json.JsonSlurper
 
-def selectedEnv = params.ENV
-// Create the folders first
+def selectedEnv = 'dev' // Explicitly set to 'dev'
+
+// Create the 'poc' and 'poc/dev' folders
 folder('poc') {
+    displayName('POC Folder')
 }
 
 folder("poc/${selectedEnv}") {
+    displayName("POC Environment Folder for ${selectedEnv}")
 }
 
 def services = loadServices(selectedEnv)
