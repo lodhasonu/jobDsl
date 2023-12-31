@@ -1,7 +1,12 @@
 import groovy.json.JsonSlurper
 
-// Use environment variable to access the Jenkins build parameter
-def selectedEnv = System.getenv('ENV') ?: 'default_value'  // Set a default value if ENV is not provided
+// Fetch the 'ENV' parameter from Jenkins job parameters
+def selectedEnv = binding.variables.get('ENV')
+
+if (!selectedEnv) {
+    println "ENV parameter is not provided. Exiting script execution."
+    return  // Exit the script if ENV is not provided
+}
 
 folder('pipeline') {
     displayName('pipeline-0')
