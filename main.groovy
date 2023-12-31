@@ -15,7 +15,9 @@ def loadServices() {
 }
 
 def createPipelineJob(service) {
-    def pipelineScript = loadPipelineScript("./pipeline_templates/pipelineScript.groovy")
+    // URL of the raw pipeline script in GitHub
+    def scriptUrl = 'https://raw.githubusercontent.com/lodha/jobdsl/master/pipeline_templates/pipelineScript.groovy'
+    def pipelineScript = loadRemoteScript(scriptUrl)
 
     pipelineJob("poc/${service.name}") {
         definition {
@@ -26,8 +28,11 @@ def createPipelineJob(service) {
     }
 }
 
-def loadPipelineScript(String path) {
-    return new File(path).text
+def loadRemoteScript(String url) {
+    // This method loads the script content from a remote URL
+    // For public repositories
+    return new URL(url).text
+
+    // For private repositories, you would need to include authentication,
+    // which is more complex and depends on how you handle secrets/authentication.
 }
-
-
