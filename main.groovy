@@ -15,7 +15,7 @@ def loadServices() {
 }
 
 def createPipelineJob(service) {
-    def pipelineScript = loadPipelineScript("pipeline_templates/pipelineScript.groovy")
+    def pipelineScript = loadPipelineScript("./pipeline_templates/pipelineScript.groovy")
 
     pipelineJob("poc/${service.name}") {
         definition {
