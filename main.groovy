@@ -4,7 +4,7 @@ def selectedEnv = 'aud-dev-1' // Explicitly set to 'dev'
 
 // Create the 'poc' and 'poc/dev' folders
 folder('pipeline') {
-    displayName('cicd')
+    displayName('pipeline')
 }
 
 folder("pipeline/${selectedEnv}") {
@@ -32,7 +32,7 @@ def createPipelineJob(service, String env) {
     }
 
     def pipelineScript = fetchAndPreparePipelineScript(scriptUrl, service)
-    pipelineJob("poc/${env}/${service.name}") {
+    pipelineJob("pipeline/${env}/${service.name}") {
         definition {
             cps {
                 script(pipelineScript)
